@@ -3,14 +3,16 @@ import math
 import random
 from tkinter import messagebox
 import os
+import time
 
 class Bill_App:
     def __init__(self, root):
         self.root = root
-        self.root.geometry("1350x700+0+0")
+        self.root.geometry("1350x700")
         self.root.title("Billing Software")
-        # self.root.iconbitmap(r"C:\Users\User\Desktop\kinter\images\icon.ico")
-
+        self.root.iconbitmap(r"ui.ico")
+        messagebox.showinfo("info","Welcome to Siva's Retail")
+        messagebox.showinfo("info","Developed by Siva")
         # bg_color = "#074463"
         title = Label(self.root, text="Billing Software",bd=12, relief=GROOVE, bg="#074463", fg= "white", font=("times new roman", 30, "bold"), pady=2).pack(fill=X)
 
@@ -52,13 +54,16 @@ class Bill_App:
 
         self.c_name=StringVar()
         self.c_phone=StringVar()
+        # if self.c_phone.get() == 0:
+        #     messagebox.showerror("Error","Phone Number must be filled")
+        #     return
+
         self.bill_no=StringVar()
         x = random.randint(1000,9999)
         self.bill_no.set(str(x))
         self.search_bill=StringVar()
-
-
-
+        self.get_time=time.strftime('%H:%M:%S')
+    
 
         # ===========================Customer detaile frame==============================================
 
@@ -70,12 +75,16 @@ class Bill_App:
 
         cphn_lb1 = Label(F1, text=" Phone Number",bg="#074463",fg="white" , font=("times new roman",18,"bold")).grid(row=0, column=2, padx=20, pady=5)
         cphn_txt = Entry(F1,width=15,textvariable=self.c_phone,font="arial 15",bd=7,relief=SUNKEN).grid(row=0, column=3, padx=10, pady=5)
+    
 
         cbill_lb1 = Label(F1, text=" Bill",bg="#074463",fg="white" , font=("times new roman",18,"bold")).grid(row=0, column=4, padx=20, pady=5)
         cbill_txt = Entry(F1,width=15,textvariable=self.bill_no,font="arial 15",bd=7,relief=SUNKEN).grid(row=0, column=5, padx=10, pady=5)
 
         bill_btn = Button(F1, text=" Search ",bg="white",fg="black", command=self.find_bill,textvariable=self.search_bill, width=10, font="arial 12 bold").grid(row=0, column=6, pady=10,padx=10)
+        #bill_bgt = Label(F1,width=15,textvariable=self.search_bill,font="arial 15",bd=7,relief=SUNKEN).grid(row=0, column=3, padx=10, pady=5)
+        
 
+    
         # ============================ products=============================================================
 
 
@@ -197,7 +206,7 @@ class Bill_App:
 
         total_btn = Button(btn_F, command=self.total, text="Total", bg="cadetblue", fg="white",pady=15, width=11, font="arial 12 bold").grid(row=0, column=0,padx=5,pady=5)
         Gbill = Button(btn_F, command=self.bill_area, text="Generate Bill", bg="cadetblue", fg="white",pady=15, width=11, font="arial 12 bold").grid(row=0, column=1,padx=5,pady=5)
-        Clear = Button(btn_F, text="Clear", bg="cadetblue", fg="white",pady=15, width=11, font="arial 12 bold").grid(row=0, column=2,padx=5,pady=5)
+        Clear = Button(btn_F, text="Clear",command=self.clear, bg="cadetblue", fg="white",pady=15, width=11, font="arial 12 bold").grid(row=0, column=2,padx=5,pady=5)
         Exit = Button(btn_F, text="Exit", bg="cadetblue", fg="white",pady=15, width=11, font="arial 12 bold").grid(row=0, column=3,padx=5,pady=5)
         self.welcome_bill()
 
@@ -218,7 +227,6 @@ class Bill_App:
         self.cold_drink_tax.set("Rs. " + str(self.total_cold_drink_price*0.18))
 
         self.billing_price = float((self.total_product_price)+(self.total_g_price)+(self.total_cold_drink_price)+(self.total_product_price*0.18)+(self.total_g_price*0.18)+(self.total_cold_drink_price*0.18))
-        
 
     def welcome_bill(self):
         self.textarea.delete('1.0',END)
@@ -226,14 +234,48 @@ class Bill_App:
         self.textarea.insert(END, f"\n Bill Number : {self.bill_no.get()}")
         self.textarea.insert(END, f"\n Customer Name : {self.c_name.get()}")
         self.textarea.insert(END, f"\n Phone Number : {self.c_phone.get()}")
+        self.textarea.insert(END, f"\n Time Of Purchase : {self.get_time}\n")
         self.textarea.insert(END, f"\n===================================")
         self.textarea.insert(END, f"\nprodacts\t\tQty\t  price")
         self.textarea.insert(END, f"\n===================================")
+    # def chk(self):
+    #     if self.cphn_txt ==0:
 
 
     def bill_area(self):
         self.welcome_bill()
-        # products
+        if len(self.c_phone.get()) < 1:
+             messagebox.showerror("Error","Phone Number must be filled")
+             return
+
+        elif len(self.c_phone.get()) < 10:
+             messagebox.showerror("Error","Phone Number is Not Correct")
+             messagebox.showerror("Error",f"{10-len(self.c_phone.get())} More Digits Needed")
+             return
+        
+        elif len(self.c_phone.get()) > 10:
+             messagebox.showerror("Error","Phone Number is Not Correct")
+             messagebox.showerror("Error",f"{len(self.c_phone.get())-10} less Digits Needed")
+             return
+
+        elif len(self.c_name.get()) < 1:
+            messagebox.showerror("Error","Customer Name must be filled")
+            return
+       
+        elif len(self.g_price.get()) < 1:
+            messagebox.showerror("Error","No Items in cart/genrate total first....")
+            return
+        
+        elif len(self.product_price.get()) < 1:
+            messagebox.showerror("Error","No Items In cart...")
+            return
+
+        elif len(self.cold_drink_price.get()) < 1:
+            messagebox.showerror("Error","No Items In cart...")
+            return
+        
+        
+
         if self.soap.get()!=0 :
             self.textarea.insert(END, f"\nBath soap\t\t{self.soap.get()}\t  {(self.soap.get()*40)}")
         if self.face_cream.get()!=0 :
@@ -284,16 +326,21 @@ class Bill_App:
         # ****************************saving of bill*******************************************************
     def save_bill(self):
         op = messagebox.askyesno("save Bill","Do you want to save the bil?")
+        
         if op>0:
             if not os.path.exists("Bills"):
                 os.mkdir("Bills")
-                messagebox.showerror("info","No Bills Are Existing this is your first bill...")
+                messagebox.showinfo("info","No Bills Are Existing This is your first bill...")
                 self.bill_data = self.textarea.get('1.0',END)
                 f1 = open("Bills/"+str(self.bill_no.get())+".txt","w")
                 f1 = open("Bills/"+str(self.bill_no.get())+".txt","w")
                 f1.write(self.bill_data)
                 f1.close
                 messagebox.showinfo("saved", f"Bill no. : {self.bill_no.get()} saved successfully")
+                return
+            
+            if os.path.exists(f"Bills/{self.bill_no.get()}"):
+                messagebox.showwarning("warning","Bill no. already exists")
                 return
 
             self.bill_data = self.textarea.get('1.0',END)
@@ -312,6 +359,9 @@ class Bill_App:
             for d in f1:
                 self.textarea.insert(END,d)
             f1.close()
+
+    def clear(self):
+       self.textarea.delete("1.0","end")
 
 root = Tk()
 obj = Bill_App(root)
