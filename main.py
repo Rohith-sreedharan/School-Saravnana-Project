@@ -192,6 +192,7 @@ class Rohith(object):
         clotrimazole_lbl.grid(row=4, column=0, padx=10, pady=20)
         clotrimazole_en = Entry(F2, bd=8, relief=RAISED, textvariable=self.clotrimazole_cream)
         clotrimazole_en.grid(row=4, column=1, ipady=5, ipadx=5)
+# Coded By Rohithaditya
 
         # This function for Reciept Area frames
         F3 = Label(self.root, bd=10, relief=RAISED)
@@ -307,6 +308,7 @@ class Rohith(object):
         self.txt.insert(END, f"\nContact No. : {str(self.customer_contact_number.get())}")
         self.txt.insert(END, "\nProduct: Quantity: Price:")
         self.txt.insert(END, "\n--------------------------------------")
+# Coded By Rohithaditya
 
 # Function to clear the receipt area
 
@@ -414,8 +416,5 @@ class Rohith(object):
 
     def exit(self):
         self.root.destroy()
-
-
-
 object = Rohith(root)
 root.mainloop() 
