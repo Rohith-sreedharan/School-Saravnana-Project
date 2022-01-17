@@ -17,5 +17,5 @@
 ## Time: 04:54 PM
 
 ## How To Run:
-    1. `pip install -r  install.txt`
-    2. `python3 main.py`          
+`pip install -r  install.txt`
+`python3 main.py`          
